@@ -55,6 +55,16 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 		return
 	}
 
+	if m.Content == "水素" {
+		text := fmt.Sprintf("あぁ～ 水素の音ォ～!!<@!%s>", m.Author.ID)
+		s.ChannelMessageSend(m.ChannelID, text)
+	}
+
+	if m.Content == "カス" {
+		text := fmt.Sprintf("お前がカス<@!%s>", m.Author.ID)
+		s.ChannelMessageSend(m.ChannelID, text)
+	}
+
 	if m.Content == "時間" {
 		t := time.Now()
 		text := fmt.Sprintf("%d時%d分%d秒", t.Hour(), t.Minute(), t.Second())

@@ -11,7 +11,7 @@ import(
 )
 
 var(
-	Token string="TOKEN"
+	Token string="Token"
 )
 
 func main(){
@@ -57,9 +57,24 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 
 	if m.Content == "時間" {
 		t := time.Now()
-		t2 := time.Date(2001, 2, 1, 3, 34, 0 , 0,  time.UTC)
 		text := fmt.Sprintf("%d時%d分%d秒", t.Hour(), t.Minute(), t.Second())
-		diff := t2.Sub(t)
-		s.ChannelMessageSend(m.ChannelID, diff)
+		s.ChannelMessageSend(m.ChannelID, text)
+	}
+
+	if m.Content == "334" {
+		JST, err := time.LoadLocation("Asia/Tokyo")
+		if err != nil {
+			fmt.Println("あなたは今虚空にいます...", err)
+			return
+		}
+
+		t := time.Now()
+		target := time.Date(t.Year(), t.Month(), t.Day(), 3, 34, 0, 0 , JST)
+		time := t.Sub(target)
+		sec := 60 - int(time.Seconds())%60
+		min := 60 - (int(time.Seconds()) % 3600)/60
+		hour := 23 - int(time.Seconds()) / 3600
+		text := fmt.Sprintf("334まで後%d時%d分%d秒\n <@!%s>",hour, min, sec, m.Author.ID)
+		s.ChannelMessageSend(m.ChannelID, text)
 	}
 }

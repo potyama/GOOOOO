@@ -84,7 +84,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 		sec := 60 - int(time.Seconds())%60
 		min := 60 - (int(time.Seconds()) % 3600)/60
 		hour := 23 - int(time.Seconds()) / 3600
-		text := fmt.Sprintf("334まで後%d時%d分%d秒\n <@!%s>",hour, min, sec, m.Author.ID)
+		text := fmt.Sprintf("334まで後%d時間%d分%d秒\n <@!%s>",hour, min, sec, m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
 	}
 }

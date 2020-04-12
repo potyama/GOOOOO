@@ -1,6 +1,7 @@
 package main
 
 import(
+	"bufio"
 	"time"
 	"fmt"
 	"os"
@@ -11,9 +12,6 @@ import(
 	"github.com/bwmarrin/discordgo"
 )
 
-var(
-	Token string=""
-)
 
 func main(){
 	dg, err := discordgo.New("Bot " + Token)
@@ -134,4 +132,21 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 		return
 
 	}
+}
+
+// isso love
+func loadTokenFromEnv() string{
+	fp, err := os.Open(".env")
+	if err != nil {
+		panic(err)
+	}
+
+	defer fp.Close()
+
+	scan := bufio.NewScanner(fp)
+	var Token string
+	for scan.Scan(){
+		Token = scan.Text()
+	}
+	return Token
 }

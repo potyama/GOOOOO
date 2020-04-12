@@ -114,7 +114,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.Contains(m.Content, "ほめて") == true {
 		n := rand.Intn(7)
 		if n == 5 {
-			text := fmt.Sprintf("おう.....<@!%s>", m.Author.ID)
+			text := fmt.Sprintf("おう......<@!%s>", m.Author.ID)
 			s.ChannelMessageSend(m.ChannelID, text)
 			return
 		}

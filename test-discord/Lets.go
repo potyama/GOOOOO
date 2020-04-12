@@ -12,7 +12,7 @@ import(
 )
 
 var(
-	Token string=""
+	Token string="Njk4NTY5MTg3NjkzNTU5ODI4.XpIK-g.GhRk5qixUGBL5mvpbr87RTHbryk"
 )
 
 func main(){
@@ -60,42 +60,24 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 		s.ChannelMessageSend(m.ChannelID, text)
 	}
 
-	if m.Content == "ほめて"{
-		rand.Seed(time.Now().UnixNano())
-		n:= rand.Intn(7)
-		if n == 5{
-			text := fmt.Sprintf("おう.....<@!%s>", m.Author.ID)
-			s.ChannelMessageSend(m.ChannelID, text)
-			return
-		}
-		if n % 3 == 0{
-			text := fmt.Sprintf("すごい！！！！<@!%s>", m.Author.ID)
-			s.ChannelMessageSend(m.ChannelID, text)
-		}
-		if n % 3 == 1{
-			text := fmt.Sprintf("えらい！！！！！！<@!%s>", m.Author.ID)
-			s.ChannelMessageSend(m.ChannelID, text)
-		}
-		if n % 3 == 2{
-			text := fmt.Sprintf("天才！！！！！<@!%s>", m.Author.ID)
-			s.ChannelMessageSend(m.ChannelID, text)
-		}
-	}
 
 	if m.Content == "!水素" {
 		text := fmt.Sprintf("あぁ～ 水素の音ォ～!!<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
 	}
 
 	if m.Content == "!カス" {
 		text := fmt.Sprintf("お前がカス<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
 	}
 
 	if m.Content == "!time" {
 		t := time.Now()
 		text := fmt.Sprintf("%d時%d分%d秒", t.Hour(), t.Minute(), t.Second())
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
 	}
 
 	if m.Content == "!334" {
@@ -113,5 +95,30 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 		hour := 23 - int(time.Seconds()) / 3600
 		text := fmt.Sprintf("334まで後%d時間%d分%d秒\n <@!%s>",hour, min, sec, m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
+	}
+	if m.Content == "ほめて"{
+		rand.Seed(time.Now().UnixNano())
+		n:= rand.Intn(7)
+		if n == 5{
+			text := fmt.Sprintf("おう.....<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+			return
+		}
+		if n % 3 == 0{
+			text := fmt.Sprintf("すごい！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+			return
+		}
+		if n % 3 == 1{
+			text := fmt.Sprintf("えらい！！！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+			return
+		}
+		if n % 3 == 2{
+			text := fmt.Sprintf("天才！！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+			return
+		}
 	}
 }

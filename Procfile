@@ -1,1 +1,1 @@
-web: test-discord
+discordbot: test-discord

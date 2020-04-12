@@ -62,55 +62,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	if m.Content == "!help" {
-		text := fmt.Sprintf("!水素->水素の音を発します。\n!カス->罵られます。\n!time->現在時刻を表示します。\n!334->334までの時刻を表示します。\nほめて->ほめてくれるよ \n3:30に334の通知をするよ")
-		s.ChannelMessageSend(m.ChannelID, text)
-		return
-	}
 
-	if m.Content == "!水素" {
-		text := fmt.Sprintf("あぁ～ 水素の音ォ～!!<@!%s>", m.Author.ID)
-		s.ChannelMessageSend(m.ChannelID, text)
-		return
-	}
-
-	if m.Content == "!カス" {
-		text := fmt.Sprintf("お前がカス<@!%s>", m.Author.ID)
-		s.ChannelMessageSend(m.ChannelID, text)
-		return
-	}
-
-	if m.Content == "!time" {
-		t := time.Now()
-		text := fmt.Sprintf("%d時%d分%d秒", t.Hour(), t.Minute(), t.Second())
-		s.ChannelMessageSend(m.ChannelID, text)
-		return
-	}
-
-	if m.Content == "!334" {
-		JST, err := time.LoadLocation("Asia/Tokyo")
-		if err != nil {
-			fmt.Println("あなたは今虚空にいます...", err)
+	if strings.HasPrefix(m.Content, "!") == true {
+		if findCommandsInMessage(s, m) {
 			return
 		}
-
-		t := time.Now()
-		var target time.Time
-		if t.Hour() >= 3 && t.Minute() >= 34 && t.Second() >= 1 {
-			target = time.Date(t.Year(), t.Month(), t.Day()+1, 3, 34, 0, 0, JST)
-		} else {
-			target = time.Date(t.Year(), t.Month(), t.Day(), 3, 34, 0, 0, JST)
-		}
-		time := t.Sub(target)
-
-		sec := Abs(int(time.Seconds()) % 60)
-		min := Abs((int(time.Seconds()) % 3600) / 60)
-		hour := Abs(int(time.Seconds()) / 3600)
-
-		text := fmt.Sprintf("334まで後%d時間%d分%d秒\n <@!%s>", hour, min, sec, m.Author.ID)
-		s.ChannelMessageSend(m.ChannelID, text)
-		return
 	}
+
 	if strings.Contains(m.Content, "ほめて") == true {
 		n := rand.Intn(7)
 		if n == 5 {
@@ -132,10 +90,59 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		return
 	}
-	if strings.HasPrefix(m.Content, "!") == true {
-		text := fmt.Sprintf("なんやカス<@!%s>", m.Author.ID)
+}
+
+func findCommandsInMessage(s *discordgo.Session, m *discordgo.MessageCreate) bool {
+	switch m.Content[1:] {
+	case "help":
+		text := fmt.Sprintf("!水素->水素の音を発します。\n!カス->罵られます。\n!time->現在時刻を表示します。\n!334->334までの時刻を表示します。\nほめて->ほめてくれるよ \n3:30に334の通知をするよ")
 		s.ChannelMessageSend(m.ChannelID, text)
+
+	case "水素":
+		text := fmt.Sprintf("あぁ～ 水素の音ォ～!!<@!%s>", m.Author.ID)
+		s.ChannelMessageSend(m.ChannelID, text)
+
+	case "カス":
+		text := fmt.Sprintf("お前がカス<@!%s>", m.Author.ID)
+		s.ChannelMessageSend(m.ChannelID, text)
+
+	case "time":
+		t := time.Now()
+		text := fmt.Sprintf("%d時%d分%d秒", t.Hour(), t.Minute(), t.Second())
+		s.ChannelMessageSend(m.ChannelID, text)
+
+	case "334":
+		JST, err := time.LoadLocation("Asia/Tokyo")
+		if err != nil {
+			fmt.Println("あなたは今虚空にいます...", err)
+			break
+		}
+
+		t := time.Now()
+		var target time.Time
+		if t.Hour() >= 3 && t.Minute() >= 34 && t.Second() >= 1 {
+			target = time.Date(t.Year(), t.Month(), t.Day()+1, 3, 34, 0, 0, JST)
+		} else {
+			target = time.Date(t.Year(), t.Month(), t.Day(), 3, 34, 0, 0, JST)
+		}
+		time := t.Sub(target)
+
+		sec := Abs(int(time.Seconds()) % 60)
+		min := Abs((int(time.Seconds()) % 3600) / 60)
+		hour := Abs(int(time.Seconds()) / 3600)
+
+		text := fmt.Sprintf("334まで後%d時間%d分%d秒\n <@!%s>", hour, min, sec, m.Author.ID)
+		s.ChannelMessageSend(m.ChannelID, text)
+
+	default:
+		if strings.Contains(m.Content, "ほめて") == false {
+			text := fmt.Sprintf("なんやカス<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+			return true
+		}
+		return false
 	}
+	return true
 }
 
 // isso love

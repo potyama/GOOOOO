@@ -14,6 +14,7 @@ import(
 
 
 func main(){
+	Token := loadTokenFromEnv()
 	dg, err := discordgo.New("Bot " + Token)
 	if err != nil{
 		fmt.Println("err opening connection....", err)

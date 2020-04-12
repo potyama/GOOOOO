@@ -12,7 +12,7 @@ import(
 )
 
 var(
-	Token string="Njk4NTY5MTg3NjkzNTU5ODI4.XpIK-g.GhRk5qixUGBL5mvpbr87RTHbryk"
+	Token string=""
 )
 
 func main(){
@@ -58,6 +58,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 	if m.Content == "!help" {
 		text := fmt.Sprintf("!水素->水素の音を発します。\n!カス->罵られます。\n!time->現在時刻を表示します。\n!334->334までの時刻を表示します。\nほめて->ほめてくれるよ ")
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
 	}
 
 

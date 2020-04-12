@@ -95,11 +95,11 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 		}
 
 		t := time.Now()
-
-		if(t.Hours() >=3 && t.Minutes() >= 34 && t.Seconds() >= 1 ){
-			target := time.Date(t.Year(), t.Month(), t.Day()+1, 3, 34, 0, 0 , JST)
+		var target time.Time
+		if(t.Hour() >=3 && t.Minute() >= 34 && t.Second() >= 1 ){
+			target = time.Date(t.Year(), t.Month(), t.Day()+1, 3, 34, 0, 0 , JST)
 		}else{
-			target := time.Date(t.Year(), t.Month(), t.Day(), 3, 34, 0, 0 , JST)
+			target = time.Date(t.Year(), t.Month(), t.Day(), 3, 34, 0, 0 , JST)
 		}
 		time := t.Sub(target)
 

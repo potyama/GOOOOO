@@ -131,7 +131,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 			s.ChannelMessageSend(m.ChannelID, text)
 		}
 		return
-
+	}
+	if strings.HasPrefix(m.Content, "!") == true{
+		text := fmt.Sprintf("なんやカス<@!%s>", m.Author.ID)
+		s.ChannelMessageSend(m.ChannelID, text)
 	}
 }
 

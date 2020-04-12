@@ -4,6 +4,7 @@ import(
 	"time"
 	"fmt"
 	"os"
+	"math/rand"
 	"os/signal"
 	"syscall"
 
@@ -11,7 +12,7 @@ import(
 )
 
 var(
-	Token string="Token"
+	Token string=""
 )
 
 func main(){
@@ -54,24 +55,50 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 	if m.Author.ID == s.State.User.ID{
 		return
 	}
+	if m.Content == "!help" {
+		text := fmt.Sprintf("!水素->水素の音を発します。\n!カス->罵られます。\n!time->現在時刻を表示します。\n!334->334までの時刻を表示します。\nほめて->ほめてくれるよ ")
+		s.ChannelMessageSend(m.ChannelID, text)
+	}
 
-	if m.Content == "水素" {
+	if m.Content == "ほめて"{
+		rand.Seed(time.Now().UnixNano())
+		n:= rand.Intn(7)
+		if n == 5{
+			text := fmt.Sprintf("おう.....<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+			return
+		}
+		if n % 3 == 0{
+			text := fmt.Sprintf("すごい！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+		}
+		if n % 3 == 1{
+			text := fmt.Sprintf("えらい！！！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+		}
+		if n % 3 == 2{
+			text := fmt.Sprintf("天才！！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+		}
+	}
+
+	if m.Content == "!水素" {
 		text := fmt.Sprintf("あぁ～ 水素の音ォ～!!<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
 	}
 
-	if m.Content == "カス" {
+	if m.Content == "!カス" {
 		text := fmt.Sprintf("お前がカス<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
 	}
 
-	if m.Content == "時間" {
+	if m.Content == "!time" {
 		t := time.Now()
 		text := fmt.Sprintf("%d時%d分%d秒", t.Hour(), t.Minute(), t.Second())
 		s.ChannelMessageSend(m.ChannelID, text)
 	}
 
-	if m.Content == "334" {
+	if m.Content == "!334" {
 		JST, err := time.LoadLocation("Asia/Tokyo")
 		if err != nil {
 			fmt.Println("あなたは今虚空にいます...", err)

@@ -14,6 +14,7 @@ import(
 
 
 func main(){
+	rand.Seed(time.Now().UnixNano())
 	Token := loadTokenFromEnv()
 	dg, err := discordgo.New("Bot " + Token)
 	if err != nil{
@@ -110,8 +111,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 		s.ChannelMessageSend(m.ChannelID, text)
 		return
 	}
-	if m.Content == "ほめて"{
-		rand.Seed(time.Now().UnixNano())
+	if strings.Contains(m.Content, "ほめて") == true{
 		n:= rand.Intn(7)
 		if n == 5{
 			text := fmt.Sprintf("おう.....<@!%s>", m.Author.ID)

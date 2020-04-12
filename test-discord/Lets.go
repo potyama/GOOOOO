@@ -49,6 +49,12 @@ func main(){
 	dg.Close()
 }
 
+func Abs(x int) int{
+	if x < 0{
+		return -x
+	}
+	return x
+}
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 
@@ -58,44 +64,27 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 	if m.Content == "!help" {
 		text := fmt.Sprintf("!水素->水素の音を発します。\n!カス->罵られます。\n!time->現在時刻を表示します。\n!334->334までの時刻を表示します。\nほめて->ほめてくれるよ ")
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
 	}
 
-	if m.Content == "ほめて"{
-		rand.Seed(time.Now().UnixNano())
-		n:= rand.Intn(7)
-		if n == 5{
-			text := fmt.Sprintf("おう.....<@!%s>", m.Author.ID)
-			s.ChannelMessageSend(m.ChannelID, text)
-			return
-		}
-		if n % 3 == 0{
-			text := fmt.Sprintf("すごい！！！！<@!%s>", m.Author.ID)
-			s.ChannelMessageSend(m.ChannelID, text)
-		}
-		if n % 3 == 1{
-			text := fmt.Sprintf("えらい！！！！！！<@!%s>", m.Author.ID)
-			s.ChannelMessageSend(m.ChannelID, text)
-		}
-		if n % 3 == 2{
-			text := fmt.Sprintf("天才！！！！！<@!%s>", m.Author.ID)
-			s.ChannelMessageSend(m.ChannelID, text)
-		}
-	}
 
 	if m.Content == "!水素" {
 		text := fmt.Sprintf("あぁ～ 水素の音ォ～!!<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
 	}
 
 	if m.Content == "!カス" {
 		text := fmt.Sprintf("お前がカス<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
 	}
 
 	if m.Content == "!time" {
 		t := time.Now()
 		text := fmt.Sprintf("%d時%d分%d秒", t.Hour(), t.Minute(), t.Second())
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
 	}
 
 	if m.Content == "!334" {
@@ -106,12 +95,43 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 		}
 
 		t := time.Now()
-		target := time.Date(t.Year(), t.Month(), t.Day(), 3, 34, 0, 0 , JST)
+
+		if(t.Hours() >=3 && t.Minutes() >= 34 && t.Seconds() >= 1 ){
+			target := time.Date(t.Year(), t.Month(), t.Day()+1, 3, 34, 0, 0 , JST)
+		}else{
+			target := time.Date(t.Year(), t.Month(), t.Day(), 3, 34, 0, 0 , JST)
+		}
 		time := t.Sub(target)
-		sec := 60 - int(time.Seconds())%60
-		min := 60 - (int(time.Seconds()) % 3600)/60
-		hour := 23 - int(time.Seconds()) / 3600
+
+		sec := Abs(int(time.Seconds())%60)
+		min := Abs((int(time.Seconds()) % 3600)/60)
+		hour := Abs(int(time.Seconds()) / 3600)
+
 		text := fmt.Sprintf("334まで後%d時間%d分%d秒\n <@!%s>",hour, min, sec, m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
+		return
+	}
+	if m.Content == "ほめて"{
+		rand.Seed(time.Now().UnixNano())
+		n:= rand.Intn(7)
+		if n == 5{
+			text := fmt.Sprintf("おう.....<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+			return
+		}
+
+		switch n % 3 {
+		case 0:
+			text := fmt.Sprintf("すごい！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+		case 1:
+			text := fmt.Sprintf("えらい！！！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+		case 2:
+			text := fmt.Sprintf("天才！！！！！<@!%s>", m.Author.ID)
+			s.ChannelMessageSend(m.ChannelID, text)
+		}
+		return
+
 	}
 }

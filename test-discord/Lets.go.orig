@@ -62,37 +62,32 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	if m.Content == "~help" {
-		text := fmt.Sprintf("~水素->水素の音を発します。\n
-							~カス->罵られます。\n
-							~time->現在時刻を表示します。\n
-							~334->334までの時刻を表示します。\n
-							ほめて->ほめてくれるよ \n
-							3:30に334の通知をするよ")
+	if m.Content == "!help" {
+		text := fmt.Sprintf("!水素->水素の音を発します。\n!カス->罵られます。\n!time->現在時刻を表示します。\n!334->334までの時刻を表示します。\nほめて->ほめてくれるよ \n3:30に334の通知をするよ")
 		s.ChannelMessageSend(m.ChannelID, text)
 		return
 	}
 
-	if m.Content == "~水素" {
-		text := fmt.Sprintf("あぁ～ 水素の音ォ～!!")
+	if m.Content == "!水素" {
+		text := fmt.Sprintf("あぁ～ 水素の音ォ～!!<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
 		return
 	}
 
-	if m.Content == "~カス" {
+	if m.Content == "!カス" {
 		text := fmt.Sprintf("お前がカス<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
 		return
 	}
 
-	if m.Content == "~time" {
+	if m.Content == "!time" {
 		t := time.Now()
 		text := fmt.Sprintf("%d時%d分%d秒", t.Hour(), t.Minute(), t.Second())
 		s.ChannelMessageSend(m.ChannelID, text)
 		return
 	}
 
-	if m.Content == "~334" {
+	if m.Content == "!334" {
 		JST, err := time.LoadLocation("Asia/Tokyo")
 		if err != nil {
 			fmt.Println("あなたは今虚空にいます...", err)
@@ -137,11 +132,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		return
 	}
-	/*
-	if strings.HasPrefix(m.Content, "~") == true {
+	if strings.HasPrefix(m.Content, "!") == true {
 		text := fmt.Sprintf("なんやカス<@!%s>", m.Author.ID)
 		s.ChannelMessageSend(m.ChannelID, text)
-	}*/
+	}
 }
 
 // isso love
